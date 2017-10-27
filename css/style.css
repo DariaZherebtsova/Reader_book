@@ -1,0 +1,36 @@
+
+/*---------------------------------*/
+/* для первой страницы index.html  */
+
+#welcom_picture {
+	/* position: relative; */
+	/* top:50px; */
+	display:block;
+	margin:auto;
+	/* width: 30%; */
+	max-width: 30%;
+	min-width: 300px;
+}
+
+#login {
+	color:  #795548;
+	text-align: center;
+	margin-top: 20px;
+}
+
+#login button {
+	background: #795548;
+    color: #fff;
+}
+
+/*---------------------------------*/
+/* для второй страницы second_page.html  */
+
+#second_page_h3 {
+	text-align: center;
+	margin-top: 50px;
+}
+
+#second_page_menu {
+	text-align: center;
+}

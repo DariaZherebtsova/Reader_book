@@ -1,0 +1,44 @@
+<!doctype html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+	<script type="text/javascript" src="js/lib/jquery-3.1.1.js"></script>
+	<script>
+	
+		//let objj = require('books.json');
+		//console.log("objj ",objj.user_data);
+		
+		var objj = [];
+		var jqxhr = $.getJSON( "books.json", function(data) {
+			console.log( "success" );
+			
+			objj = data;
+				
+			console.log(data.length);
+			console.log("1 objj ",objj.length);
+				
+			console.log("data[2]= ", data.name );
+				//console.log(items[2]);
+		})
+		.done(function(data) { 
+			console.log( "second success" );
+			console.log("data[2]= ", data.user_data );
+			privet(data);
+		    console.log("2 objj ",objj.name);
+		})
+		.fail(function() { console.log( "error" ); })
+		.always(function() { console.log( "always" ); });
+		
+		function privet(data) {
+			console.log("privet data= ", data.name );
+			objj = data;
+			console.log("3 objj ",objj.user_data);
+		}
+		
+	
+		console.log("4 objj ",objj.user_data);
+		
+		
+	</script>
+</body>
