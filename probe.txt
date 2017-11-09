@@ -1,2 +1,4 @@
 для кнопки
 onClick='location.href="second_page.html"
+
+<img id="second_picture" src="img/second_page.jpg" alt="read read">

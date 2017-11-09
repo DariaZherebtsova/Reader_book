@@ -62,20 +62,20 @@ function second_page_load(){
 			console.log( "second success" );	
 			
 		//----------------------------------------------
-	   //красивое перемещение меню в бок
-		$('.moving_menu').click(function() { /* выбираем класс icon-menu и
+	//красивое перемещение меню в бок
+	$('.moving_menu').click(function() { /* выбираем класс icon-menu и
                добавляем метод click с функцией, вызываемой при клике */
-       	// e.preventDefault();       
-       	 console.log( "click click click" );
+       // e.preventDefault();       
+        console.log( "click click click" );
  
-        	$('#book_list').animate({ //выбираем класс menu и метод animate
+        $('#book_list').animate({ //выбираем класс menu и метод animate
  
             left: '0px' /* теперь при клике по иконке, меню, скрытое за
                левой границей на 285px, изменит свое положение на 0px и станет видимым */
  
-        	}, 200); //скорость движения меню в мс
+        }, 200); //скорость движения меню в мс
          
-    		});	
+    });	
 			
 		})
 	.fail(function() { console.log( "error" ); })

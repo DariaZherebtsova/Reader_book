@@ -3,13 +3,16 @@ $(document).ready ( function(){
 	//alert("part II");
 	
 	var jqxhr = $.getJSON( "books.json", function(data) {
-	console.log( "success" );
-	
-	$('#second_page_menu').append('<a>'+data.name+'</a>');		
+		console.log( "success" );
+		console.log("length ", data.length );
+		for (var i=0; i<data.length; i++ ) {
+			$('#second_page_menu').append('<a>'+data[i].name+'</a><br>');			
+		}
+		
+				
     })
     .done(function(data) { 
-			console.log( "second success" );
-			console.log("name ", data.name );	
+			console.log( "second success" );	
 
 		})
 		.fail(function() { console.log( "error" ); })

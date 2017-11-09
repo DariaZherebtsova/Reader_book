@@ -12,13 +12,14 @@
 
 </style>
 
-<body onload="second_page_load();">		
-		<section id="book_list">
-			<h3 id="second_page_h3">Привет user</h3>
-			<ul id="second_page_menu">
-			</ul>
-			<a href="index.html">Добавить новую книгу</a>
-		</section>
+<body>
+		<img id="welcom_picture" src="img/Read Something Good.jpg" alt="Read Something Good" style=" float: center">
+	<div id="login">
+	  <label >
+	     Login <input id="login_input" type="text" name="username">
+	  </label>
+	  <button id="bt_login" >Вход</button>
+	</div>
 	<script src="js/first_page.js" type="text/javascript"></script>
 </body>
 </html>
