@@ -4,25 +4,38 @@ var new_login;
 console.log('---привет js----');  
 
 //Обработка нажатия кнопки Вход
-$('#bt_login').bind('click', function(){
+$('#bt_login').bind('click',login_enter); 
+//submit почему-то не загружал вторую страницу
+//поэтому сделала так
+$('#login_input').keyup(function(event){
+    if(event.keyCode == 13){
+        event.preventDefault();
+		console.log('нажали Enter'); 
+		login_enter();
+    }
+});
+
+function login_enter(){
   console.log('нажали Вход');  
   
-  if ($('#login_input').val().length == 0)
+  //считываем login
+  new_login =  $('#login_input').val();
+  console.log("new_login=",new_login);
+  // alert(new_login);
+  
+  if (new_login.length == 0)
   {
 	alert("Без login никак");  
-	return;
-  }
-  
-	//считываем login
-	new_login =  $('#login_input').val();
-   console.log(new_login);
-  // alert(new_login);
+	return false;
+  }	
    
    //переходим на вторую страницу
    var s="second_page.html?"+escape(new_login);
    document.location.href = s;
    console.log("*login ",new_login);
-});
+   
+   //return false;
+};
 //------------------------------
 
 //изменение login_input
@@ -63,27 +76,31 @@ function second_page_load(){
 			
 		//----------------------------------------------
 	   //красивое перемещение меню в бок
-		$('.moving_menu').click(function() { /* выбираем класс icon-menu и
-               добавляем метод click с функцией, вызываемой при клике */
+		$('.moving_menu').click(function() { /* выбираем класс icon-menu и добавляем метод click с функцией, вызываемой при клике */
        	// e.preventDefault();       
        	 console.log( "click click click" );
+       	 console.log( this.textContent );
  
         	$('#book_list').animate({ //выбираем класс menu и метод animate
  
-            left: '0px' /* теперь при клике по иконке, меню, скрытое за
-               левой границей на 285px, изменит свое положение на 0px и станет видимым */
- 
+            left: '10px' /* теперь меню изменит свое положение left:10px */
+ 				
         	}, 200); //скорость движения меню в мс
+        	
+        	table_and_grafic(this.textContent, data);
          
-    		});	
+    	});	    		
 			
-		})
+	})//done(function(data) {}
 	.fail(function() { console.log( "error" ); })
-	.always(function() { console.log( "always" ); });
-	
-	console.log( "click" );
-	
-    
-    console.log( "click click" );
+	.always(function() { console.log( "always" ); });	
+
+}
+
+
+function table_and_grafic(book_name, json_data)
+{
+	console.log("new function ", book_name );
+	console.log("***json books ", json_data[1].books[1].name );
 }
 
