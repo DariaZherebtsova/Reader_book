@@ -52,6 +52,7 @@ function second_page_load(){
 	var llogin=location.search;
 	console.log("***login ",llogin.slice(1));
 	$('#second_page_h3').text("Привет " + llogin.slice(1));
+
 	var jqxhr = $.getJSON( "books.json", function(data) {
 		console.log( "success" );
 		console.log("length ", data.length );	
@@ -63,7 +64,9 @@ function second_page_load(){
 				//цикл по массиву книг
 				for (var j=0; j<data[i].books.length; j++ ) {
 					console.log("json books ", data[i].books[j].name );
-					$('#second_page_menu').append('<li class=\'moving_menu\'><a  href=\'#\'>'+data[i].books[j].name+'</a></li>');
+					$('#second_page_menu').append('<li class=\'li_moving_menu\'><a class=\'menu_book_name\' href=\'#\'>'
+													+data[i].books[j].name+'</a>'
+													+'<progress max="100" value="25"></progress></li>');
 				}
 				//выходим из цикла
 				i = data.length;
@@ -76,10 +79,17 @@ function second_page_load(){
 			
 		//----------------------------------------------
 	   //красивое перемещение меню в бок
-		$('.moving_menu').click(function() { /* выбираем класс icon-menu и добавляем метод click с функцией, вызываемой при клике */
-       	// e.preventDefault();       
-       	 console.log( "click click click" );
-       	 console.log( this.textContent );
+		$('.li_moving_menu').click(function() { /* выбираем класс icon-menu и добавляем метод click с функцией, вызываемой при клике */
+			// e.preventDefault();       
+			console.log( "click click click" );
+			console.log( this.textContent );
+			//убираем прогресс бар из списка книг
+			$('.li_moving_menu progress').each(function() {
+				console.log( "===",$(this).val() );
+				$(this).remove();
+			})
+			
+			$('#book_list').css('max-width','200px');
  
         	$('#book_list').animate({ //выбираем класс menu и метод animate
  
