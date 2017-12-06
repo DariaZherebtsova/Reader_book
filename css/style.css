@@ -30,9 +30,47 @@
 
 /*---------------------------------*/
 /* для второй страницы second_page.html  */
+
+nav, article {display:inline-block;}
+
 article {
-	visibility: hidden;
+	visibility:hidden;
 }
+article h3 {
+	margin-left: 25px;
+}
+.baza1 {display: inline-block; margin-left: 25px;}
+
+#for_table {
+	/*position: absolute;
+	top: 140px;
+	width: 295px;
+	height:500px;
+	overflow: auto;
+	background: #beeef1;*/
+	/*height:500px;*/
+	/*overflow: scroll;*/
+	
+}
+
+#for_graphic {
+	/*position: absolute;
+	top: 140px;
+	left: 370px;
+	width: 800px;
+	height:500px;
+	margin-right:30px;*/
+	background: #f4f1c8;
+}
+
+#nameBook {
+	/*position: absolute;
+	top: 90px;
+	left: 270px;*/
+	font-size: 20px;
+	padding: 0px;
+}
+
 /*#div_all {
 	margin:auto;
 	max-width: 1000px;
@@ -51,14 +89,14 @@ article {
 
 /*меню - список книг - элемент section*/
 #book_list {
-	position: fixed;
+	position: relative;
 	left:40%;
 	/*max-width: 200px;*/
 }
 
 .menu_book_name {
 	display:inline-block;
-	width: 200px;
+	width: 150px;
 	margin-right: 10px;
 	white-space: nowrap; /* Отменяем перенос текста */
 	overflow: hidden; /* Обрезаем все, что не помещается в область */
@@ -73,4 +111,37 @@ article {
 
 #second_page_menu {
 	
+}
+
+
+/*===== для таблицы =========*/
+
+table {
+font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+font-size: 12px;
+border-collapse: collapse;
+text-align: center;
+}
+
+th {
+background: #AFCDE7;
+color: white;
+padding: 5px 5px;
+}
+
+td:first-child {
+background: #AFCDE7;
+color: white;
+padding: 10px 10px;
+}
+th, td {
+border-style: solid;
+border-width: 0 1px 1px 0;
+border-color: white;
+}
+td {
+background: #D8E6F3;
+}
+th:first-child, td:first-child {
+text-align: left;
 }
