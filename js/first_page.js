@@ -1,5 +1,7 @@
 
 var new_login;
+var login_number;
+var progress_data = [];
 
 console.log('---привет js----');  
 
@@ -17,8 +19,8 @@ $('#login_input').keyup(function(event){
 
 function login_enter(){
 	console.log('нажали Вход');  
-    var rus_lr = ('А-Б-В-Г-Д-Е-Ё-Ж-З-И-Й-К-Л-М-Н-О-П-Р-С-Т-У-Ф-Х-Ц-Ч-Ш-Щ-Ъ-Ы-Ь-Э-Ю-Я').split('-');
-	var lat_lr = ('A-B-V-G-D-E-JO-ZH-Z-I-J-K-L-M-N-O-P-R-S-T-U-F-H-C-CH-SH-SHH-TZ-Y-MZ-JE-JU-JA-Q-W-X-Y-Z').split('-');
+    //var rus_lr = ('А-Б-В-Г-Д-Е-Ё-Ж-З-И-Й-К-Л-М-Н-О-П-Р-С-Т-У-Ф-Х-Ц-Ч-Ш-Щ-Ъ-Ы-Ь-Э-Ю-Я').split('-');
+	//var lat_lr = ('A-B-V-G-D-E-JO-ZH-Z-I-J-K-L-M-N-O-P-R-S-T-U-F-H-C-CH-SH-SHH-TZ-Y-MZ-JE-JU-JA-Q-W-X-Y-Z').split('-');
 	//считываем login
 	new_login =  $('#login_input').val();
 	//new_login = new_login.toUpperCase();
@@ -28,10 +30,10 @@ function login_enter(){
 	//цикл по буквам введенного имени
 	while (i < new_login.length) {
 		console.log("-char- ", new_login.charAt(i));
-		var index_rus = rus_lr.indexOf(new_login.charAt(i));
+		//var index_rus = rus_lr.indexOf(new_login.charAt(i));
 		var code_char = new_login.charCodeAt(i);
 		code_login+=code_char + "_";
-		console.log("-index- ", index_rus);
+		//console.log("-index- ", index_rus);
 		//если такой буквы в кирилице нет
 		/*if (index_rus < 0) {
 			//смотрим в латинице
@@ -88,7 +90,7 @@ function second_page_load(){
 		llogin += String.fromCharCode(item);
 	});
 	console.log("***login ",llogin);
-	$('#second_page_h3').text("Привет " + llogin);
+	$('#second_page_h3').text("Привет, " + llogin);
 
 	var jqxhr = $.getJSON( "books.json", function(data) {
 		console.log( "success" );
@@ -98,13 +100,17 @@ function second_page_load(){
 			console.log("json login ", data[i].login );	
 			//ищем нужный логин
 			if (data[i].login == llogin) {
-				login_number = i;
+				login_number = i;				
 				//цикл по массиву книг
 				for (var j=0; j<data[i].books.length; j++ ) {
 					console.log("json books ", data[i].books[j].name );
-					$('#second_page_menu').append('<li class=\'li_moving_menu\'><a class=\'menu_book_name\' href=\'#\'>'
+					progress_data[j] = Math.round(data[i].books[j].user_data.length / data[i].books[j].numDay * 100);
+					$('#second_page_menu').append('<li class=\'li_moving_menu\'><a class=\'menu_book_name\' '
+													+'title=\''+data[i].books[j].name+'\' href=\'#\'>'
 													+data[i].books[j].name+'</a>'
-													+'<progress max="100" value="25"></progress></li>');
+													+'<progress max="100" value=\"'+progress_data[j]+'\"></progress></li>');
+					
+					console.log( "progress_data", progress_data );
 				}
 				//выходим из цикла
 				i = data.length;
@@ -113,10 +119,19 @@ function second_page_load(){
 				
    })
    .done(function(data) { 
-			console.log( "second success" );	
-			//console.log("_!_login ",login_number);
+		console.log( "second success" );	
+		//анимация плавного нарастания прогресс бара	
+		/*$('progress').each(function(index, elem) {
+			var pdata = String(progress_data[index]);
+			console.log( "--progress_data", pdata );
+			elem.animate({ //выбираем класс menu и метод animate 
+				//this.val(pdata); 	
+				value: '25'
+        	}, 500); //скорость движения меню в мс	
+		});	*/
+			
 		//----------------------------------------------
-	   //красивое перемещение меню в бок
+	    //красивое перемещение меню в бок
 		$('.li_moving_menu').click(function() { /* выбираем класс icon-menu и добавляем метод click с функцией, вызываемой при клике */
 			// e.preventDefault();       
 			console.log( "click click click" );
@@ -155,7 +170,7 @@ function second_page_load(){
 
 }
 
-
+//----таблица-----------------------------------------------------------------
 function table_and_grafic(book_name, json_data, login_number)
 {
 	console.log("new function ", book_name );
@@ -203,7 +218,7 @@ function table_and_grafic(book_name, json_data, login_number)
 	$('#nameBook').text(nameBook);
 	 
 	//сколько читать в день
-	var num_pages_day = numPages/numDay; 
+	var num_pages_day = Math.ceil(numPages/numDay); 
 	 
 	//расшифровываем дату
 	//разбиваем строку на элементы
@@ -283,6 +298,100 @@ function table_and_grafic(book_name, json_data, login_number)
 	$('#for_table').css('height','500px');
 	//прокрутка для таблицы
 	$('#for_table').css('overflow','scroll');
+	
+//----график-----------------------------------------------------------------
+ console.log("graphic "); 
+      var grHeight = 500,
+		  grWidth = 800,
+		  margin=30,
+		  data_usr=[];
+		  data_0=[];
+      
+      // создание объекта svg
+	  var svg = d3.select("#for_graphic").append("svg")
+        .attr("class", "axis")
+        .attr("width", "100%")
+        .attr("height", "100%")
+		.attr("max-width", "100%")
+        .attr("max-height", "100%");
+        
+      //console.log("svg ", svg);  
+      
+      // длина оси X = ширина контейнера svg - отступ слева и справа
+	  var xAxisLength = grWidth - 2 * margin;    
+  
+	  // длина оси Y = высота контейнера svg - отступ сверху и снизу
+	  var yAxisLength = 500 - 60 - 20;   
+	  
+	  // функция интерполяции значений на ось Х 
+	  var scaleX = d3.scaleLinear()
+            .domain([0, numDay])
+            .range([0, xAxisLength]);
+             
+	  // функция интерполяции значений на ось Y
+	  var scaleY = d3.scaleLinear()
+            .domain([numPages, 0])
+            .range([0, yAxisLength]);
+	  
+	  // масштабирование реальных данных в данные для нашей координатной системы
+	  var page_number = 0;
+	  for(i=0; i<user_data.length; i++)  {
+		  page_number = page_number + user_data[i];
+		  //console.log("page_number ",page_number);
+		  data_usr.push({x: scaleX(i+1)+margin, y: scaleY(page_number) + margin});
+	  }
+	  
+	  page_number = 0;
+	  for(i=0; i<user_data.length; i++)  {
+		  page_number = page_number + num_pages_day;
+		  //console.log("page_number ",page_number);
+		  data_0.push({x: scaleX(i+1)+margin, y: scaleY(page_number) + margin});
+	  }
+	  
+	  // создаем ось X  
+	  var xAxis = d3.axisBottom() 
+            .scale(scaleX) // функция интерполяции
+            .ticks(10); // сколько делений на оси
+
+	  // создаем ось Y            
+      var yAxis = d3.axisLeft()
+             .scale(scaleY)
+             .ticks(6);
+
+       // отрисовка оси Х            
+		svg.append("g")      
+			 .attr("class", "x-axis")
+			 .attr("transform",  // сдвиг оси вниз и вправо
+				 "translate(" + margin + "," + (margin+yAxisLength) + ")")
+			 .call(xAxis);
+			 
+	   // отрисовка оси Y
+		svg.append("g")      
+			.attr("class", "y-axis")
+			.attr("transform", // сдвиг оси вниз и вправо на margin
+					"translate(" + margin + "," + margin + ")")
+			.call(yAxis);
+			
+		// обща функция для создания графиков
+		function createChart (data, colorStroke, label){	
+			
+			// функция, создающая по массиву точек линии
+			var line = d3.line()
+						.x(function(d){return d.x;})
+						.y(function(d){return d.y;});
+			// добавляем путь
+			svg.append("g").append("path")
+			.attr("d", line(data))
+			.style("stroke", colorStroke)
+			.style("stroke-width", 2);
+			
+		}	
+		
+		createChart(data_usr, "steelblue", "usd");
+		createChart(data_0, "#FF7F0E", "euro");
+		
+		$('#for_graphic').css('height','500px');	
+	   $('#for_graphic').css('width','850px');
 }
 
 function add_new_result() {
